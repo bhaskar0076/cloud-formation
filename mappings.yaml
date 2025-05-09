@@ -1,0 +1,19 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Launch EC2 instance using Mappings for AMI
+
+Mappings:
+  RegionMap:
+    us-east-1:
+      AmiId: ami-084568db4383264d4
+    ap-south-1:
+      AmiId: ami-0f1dcc636b69a6438
+
+Resources:
+  MyEC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !FindInMap 
+        - RegionMap
+        - !Ref AWS::Region
+        - AmiId
+      InstanceType: t2.micro

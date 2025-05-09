@@ -1,0 +1,8 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Parent stack that includes a nested EC2/VPC stack
+
+Resources:
+  MyNestedStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://cf-templates-1dudujmsfvwdm-us-east-1.s3.us-east-1.amazonaws.com/2025-05-06T124630.016Zrrm-vpc.yaml
