@@ -3,4 +3,4 @@ Resources:
   mybuctket456:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: mybuctket456
+      BucketName: mybuctket456 #bucket name
