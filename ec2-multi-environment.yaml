@@ -1,0 +1,55 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: EC2 instance per environment with different configurations
+
+
+Parameters:
+  EnvironmentName:
+    Type: String
+    AllowedValues:
+      - dev
+      - test
+      - prod
+    Description: Environment (dev, test, prod)
+
+
+Mappings:
+  EnvToInstanceType:
+    dev:
+      instanceType: t2.micro
+    test:
+      instanceType: t2.small
+    prod:
+      instanceType: t3.medium
+
+
+  EnvToAmiId:
+    dev:
+      amiId: ami-0953476d60561c955  # Replace with actual AMI IDs
+    test:
+      amiId: ami-0953476d60561c955
+    prod:
+      amiId: ami-0953476d60561c955
+
+
+Resources:
+  EC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: !FindInMap [EnvToInstanceType, !Ref EnvironmentName, instanceType]
+      ImageId: !FindInMap [EnvToAmiId, !Ref EnvironmentName, amiId]
+      Tags:
+        - Key: Name
+          Value: !Sub "${EnvironmentName}-ec2-instance"
+      SecurityGroups:
+        - !Ref InstanceSecurityGroup
+
+
+  InstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Enable SSH access
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
